@@ -1,24 +1,54 @@
 server:
   port: 8080
+
 spring:
   application:
-    name: "auth-service"
-  devtools:
-    add-properties: false
+    name: auth-service
+
+  # ---- Conexión reactiva a MySQL (R2DBC)
+  r2dbc:
+    url: r2dbc:mysql://localhost:3308/crediyadb
+    username: root
+    password: root
+    pool:
+      enabled: true
+
+  # ---- Flyway (migraciones vía JDBC)
+  flyway:
+    url: jdbc:mysql://localhost:3308/crediyadb
+    user: root
+    password: root
+    locations: classpath:db/migration
+    enabled: true
+
+  # (Opcional) desactiva H2 ya que usamos MySQL
   h2:
     console:
-      enabled: true
-      path: "/h2"
-  profiles:
-    include: null
+      enabled: false
+
+  devtools:
+    add-properties: false
+
+# CORS (WebFlux) - orígenes permitidos
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
 management:
   endpoints:
     web:
       exposure:
-        include: "health,prometheus"
+        include: health,info,prometheus
   endpoint:
     health:
       probes:
         enabled: true
+
+# CORS (si quieres seguir con tu bloque propio, mantenlo)
 cors:
   allowed-origins: "http://localhost:4200,http://localhost:8080"
+
+logging:
+  level:
+    org.springframework.r2dbc: INFO
+    io.r2dbc.pool: INFO

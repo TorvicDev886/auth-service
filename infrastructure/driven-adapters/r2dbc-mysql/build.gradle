@@ -1,0 +1,18 @@
+dependencies {
+    implementation project(':model')
+    implementation 'org.springframework:spring-context'
+
+    // R2DBC + MySQL (reactivo)
+    implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
+    implementation 'io.asyncer:r2dbc-mysql:1.3.2'
+    implementation 'io.r2dbc:r2dbc-pool'
+
+    // Flyway (migraciones con JDBC) + driver MySQL
+    implementation 'org.flywaydb:flyway-core'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+
+    // Object mapper utils (Scaffold)
+    implementation 'org.reactivecommons.utils:object-mapper-api:0.1.0'
+    testImplementation 'org.reactivecommons.utils:object-mapper:0.1.0'
+}
+
