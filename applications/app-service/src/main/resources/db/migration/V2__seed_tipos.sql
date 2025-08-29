@@ -1,20 +1,18 @@
--- Usuarios (auth-service)
-CREATE TABLE IF NOT EXISTS usuarios (
-  id CHAR(36) PRIMARY KEY,
-  documento_identidad VARCHAR(20) NOT NULL,
-  nombres VARCHAR(120) NOT NULL,
-  apellidos VARCHAR(120) NOT NULL,
-  fecha_nacimiento DATE NULL,
-  direccion VARCHAR(200) NULL,
-  telefono VARCHAR(40) NULL,
-  correo_electronico VARCHAR(160) NOT NULL,
-  salario_base DECIMAL(15,2) NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  CONSTRAINT uq_usuarios_doc UNIQUE (documento_identidad),
-  CONSTRAINT uq_usuarios_email UNIQUE (correo_electronico)
-);
+-- Tipos de préstamo (solo creación + seed; NO tocar 'usuarios' aquí)
+CREATE TABLE IF NOT EXISTS tipos_prestamo (
+  id           CHAR(36)     NOT NULL,
+  nombre       VARCHAR(100) NOT NULL,
+  descripcion  VARCHAR(255) NULL,
+  tasa_interes DECIMAL(5,2) NOT NULL,
+  estado       VARCHAR(20)  NOT NULL DEFAULT 'ACTIVO',
+  created_at   TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at   TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT pk_tipos_prestamo PRIMARY KEY (id),
+  CONSTRAINT uq_tipos_prestamo_nombre UNIQUE (nombre)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Índices útiles para búsquedas frecuentes (además de los UNIQUE)
-CREATE INDEX IF NOT EXISTS idx_usuarios_email ON usuarios (correo_electronico);
-CREATE INDEX IF NOT EXISTS idx_usuarios_doc ON usuarios (documento_identidad);
+-- Seed idempotente (evita duplicados por UNIQUE(nombre))
+INSERT IGNORE INTO tipos_prestamo (id, nombre, descripcion, tasa_interes, estado) VALUES
+(UUID(), 'Consumo', 'Crédito de consumo', 18.50, 'ACTIVO'),
+(UUID(), 'Libre inversión', 'Crédito de libre inversión', 20.00, 'ACTIVO'),
+(UUID(), 'Educativo', 'Crédito educativo', 12.00, 'ACTIVO');

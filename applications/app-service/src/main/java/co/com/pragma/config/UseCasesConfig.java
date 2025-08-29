@@ -1,14 +1,15 @@
 package co.com.pragma.config;
 
-import org.springframework.context.annotation.ComponentScan;
+import co.com.pragma.usuarios.ports.out.UsuarioRepository;
+import co.com.pragma.usuarios.register.RegisterUserService;
+import co.com.pragma.usuarios.register.RegisterUserUseCase;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.FilterType;
 
 @Configuration
-@ComponentScan(basePackages = "co.com.pragma.usecase",
-        includeFilters = {
-                @ComponentScan.Filter(type = FilterType.REGEX, pattern = "^.+UseCase$")
-        },
-        useDefaultFilters = false)
 public class UseCasesConfig {
+        @Bean
+        public RegisterUserUseCase registerUserUseCase(UsuarioRepository repo) {
+                return new RegisterUserService(repo);
+        }
 }

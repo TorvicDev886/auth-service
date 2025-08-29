@@ -2,8 +2,8 @@ apply plugin: 'org.springframework.boot'
 
 dependencies {
 	implementation 'org.reactivecommons.utils:object-mapper:0.1.0'
-	implementation project(':r2dbc-postgresql')
-    // Módulos del proyecto
+	implementation project(':infrastructure:driven-adapters:r2dbc-mysql')
+    // Modulos del proyecto
     implementation project(':reactive-web')
     implementation project(':model')
     implementation project(':usecase')
@@ -13,10 +13,12 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     runtimeOnly 'org.springframework.boot:spring-boot-devtools'
 
-    // OpenAPI/Swagger para WebFlux (escanea controladores del módulo reactive-web)
+    // OpenAPI/Swagger para WebFlux (escanea controladores del mï¿½dulo reactive-web)
     implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:2.6.0'
+    implementation 'org.springframework:spring-tx'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-    // Lombok (por si este módulo lo usa)
+    // Lombok (por si este mï¿½dulo lo usa)
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testCompileOnly 'org.projectlombok:lombok'
